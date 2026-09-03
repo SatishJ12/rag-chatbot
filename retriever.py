@@ -9,10 +9,17 @@ from concurrent.futures import ThreadPoolExecutor
 from langchain_chroma import Chroma
 from langchain_core.documents import Document
 
-from config import CHROMA_DIR, COLLECTION_FAQ, COLLECTION_GUIDES, COLLECTION_TICKETS, TOP_K_PER_COLLECTION
+from config import (
+    CHROMA_DIR,
+    COLLECTION_FAQ,
+    COLLECTION_GUIDES,
+    COLLECTION_PLANS,
+    COLLECTION_TICKETS,
+    TOP_K_PER_COLLECTION,
+)
 from embeddings import get_embeddings
 
-COLLECTIONS = [COLLECTION_FAQ, COLLECTION_TICKETS, COLLECTION_GUIDES]
+COLLECTIONS = [COLLECTION_FAQ, COLLECTION_TICKETS, COLLECTION_GUIDES, COLLECTION_PLANS]
 
 _stores = {}
 _lock = threading.Lock()

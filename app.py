@@ -14,6 +14,7 @@ SAMPLE_QUESTIONS = [
     "My SIM card isn't recognized, what do I do?",
     "How do I check my current data balance?",
     "I hear an echo during phone calls, how do I fix it?",
+    "What's the difference between the Unlimited and Unlimited Plus plans?",
 ]
 
 st.set_page_config(page_title="NovaCell Support Assistant", page_icon="📶")

@@ -30,9 +30,10 @@ User question
 Merged Retriever  (parallel invoke)
   ├── ChromaDB · faq        top-3 FAQ entries
   ├── ChromaDB · tickets    top-3 resolved ticket resolutions
-  └── ChromaDB · guides     top-3 PDF guide chunks
+  ├── ChromaDB · guides     top-3 PDF guide chunks
+  └── ChromaDB · plans      top-3 plan/pricing entries
      │
-     ▼  (9 context documents, source-labelled)
+     ▼  (12 context documents, source-labelled)
 ChatPromptTemplate
   ├── system: telecom assistant persona + context injection
   └── human: user question
@@ -68,6 +69,7 @@ StrOutputParser → streamed response to UI
 | `ingest_faq.py` | Loads `data/faq.csv` into the `faq` ChromaDB collection |
 | `ingest_tickets.py` | Loads resolved tickets from `data/tickets.db` into the `tickets` collection |
 | `ingest_guides.py` | Chunks `data/telecom_guide.pdf` (600 chars, 100 overlap) into the `guides` collection |
+| `ingest_plans.py` | Loads `data/plans.json` (plan and add-on pricing) into the `plans` collection |
 | `retriever.py` | Fetches top-3 documents from each collection in parallel |
 | `chain.py` | Builds the grounded-answer LCEL chain against Groq |
 | `app.py` | Streamlit chat UI |
@@ -95,6 +97,7 @@ change — the ingest scripts are idempotent):
 python ingest_faq.py
 python ingest_tickets.py
 python ingest_guides.py
+python ingest_plans.py
 ```
 
 ## Running it
@@ -120,6 +123,23 @@ Support ops can update the bot's answers without an engineering release:
 - Edit `data/faq.csv`, then re-run `python ingest_faq.py`
 - Seed new resolved cases into `data/tickets.db`, then re-run `python ingest_tickets.py`
 - Replace `data/telecom_guide.pdf`, then re-run `python ingest_guides.py`
+- Edit `data/plans.json`, then re-run `python ingest_plans.py`
+
+### Adding a new knowledge source
+
+Per NFR-06 in the PRD, adding a source doesn't require touching the retrieval
+or generation logic — the `plans` source above followed this exact path and
+is a template for the next one:
+
+1. Write `ingest_<name>.py` that loads the source, turns each item into a
+   `Document` with `metadata={"source": "<LABEL>", "id": ..., ...}`, and
+   writes it to its own ChromaDB collection (see `ingest_plans.py`).
+2. Add the collection name to `config.py`.
+3. Add it to the `COLLECTIONS` list in `retriever.py`.
+
+`chain.py`'s prompt context and the UI's Sources display are both
+source-agnostic — they read whatever `source`/`id` metadata each collection
+provides, so no changes are needed there.
 
 ## Scope (v1)
 
