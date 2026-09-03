@@ -12,12 +12,14 @@ CHROMA_DIR = str(BASE_DIR / "chroma_store")
 FAQ_CSV = DATA_DIR / "faq.csv"
 TICKETS_DB = DATA_DIR / "tickets.db"
 GUIDE_PDF = DATA_DIR / "telecom_guide.pdf"
+PLANS_JSON = DATA_DIR / "plans.json"
 
 EMBEDDING_MODEL = "sentence-transformers/all-MiniLM-L6-v2"
 
 COLLECTION_FAQ = "faq"
 COLLECTION_TICKETS = "tickets"
 COLLECTION_GUIDES = "guides"
+COLLECTION_PLANS = "plans"
 
 GUIDE_CHUNK_SIZE = 600
 GUIDE_CHUNK_OVERLAP = 100
