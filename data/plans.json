@@ -1,0 +1,299 @@
+{
+  "currency": "USD",
+  "last_updated": "2026-06-01",
+  "operator": "NovaCell",
+  "plans": [
+    {
+      "id": "PRE-STARTER-5",
+      "name": "Starter 5",
+      "type": "prepaid",
+      "monthly_price": 15.0,
+      "data_gb": 5,
+      "data_unlimited": false,
+      "talk_minutes": "unlimited",
+      "texts": "unlimited",
+      "hotspot_gb": 0,
+      "network": "4G LTE",
+      "contract": "none",
+      "intro_offer": null,
+      "features": [
+        "No credit check",
+        "Unlimited talk and text nationwide",
+        "Data speeds reduced after 5 GB until next cycle"
+      ],
+      "best_for": "Light users who want a cheap, no-commitment plan",
+      "category": "prepaid"
+    },
+    {
+      "id": "PRE-VALUE-15",
+      "name": "Value 15",
+      "type": "prepaid",
+      "monthly_price": 25.0,
+      "data_gb": 15,
+      "data_unlimited": false,
+      "talk_minutes": "unlimited",
+      "texts": "unlimited",
+      "hotspot_gb": 5,
+      "network": "5G",
+      "contract": "none",
+      "intro_offer": null,
+      "features": [
+        "No credit check",
+        "5G access where available",
+        "5 GB included mobile hotspot",
+        "Data speeds reduced after 15 GB until next cycle"
+      ],
+      "best_for": "Moderate users who want 5G without a contract",
+      "category": "prepaid"
+    },
+    {
+      "id": "PRE-UNLTD",
+      "name": "Prepaid Unlimited",
+      "type": "prepaid",
+      "monthly_price": 45.0,
+      "data_gb": null,
+      "data_unlimited": true,
+      "talk_minutes": "unlimited",
+      "texts": "unlimited",
+      "hotspot_gb": 10,
+      "network": "5G",
+      "contract": "none",
+      "intro_offer": null,
+      "features": [
+        "No credit check",
+        "Unlimited 5G data",
+        "10 GB included mobile hotspot",
+        "Data may be slowed during network congestion after 35 GB"
+      ],
+      "best_for": "Heavy users who want unlimited data with no contract",
+      "category": "prepaid"
+    },
+    {
+      "id": "POST-ESSENTIAL",
+      "name": "Essential",
+      "type": "postpaid",
+      "monthly_price": 35.0,
+      "data_gb": 20,
+      "data_unlimited": false,
+      "talk_minutes": "unlimited",
+      "texts": "unlimited",
+      "hotspot_gb": 10,
+      "network": "5G",
+      "contract": "monthly, cancel anytime",
+      "intro_offer": null,
+      "features": [
+        "Autopay discount of $5/month included in price",
+        "5G nationwide",
+        "10 GB mobile hotspot",
+        "Free spam call blocking"
+      ],
+      "best_for": "Single line users who want a reliable postpaid plan",
+      "category": "postpaid"
+    },
+    {
+      "id": "POST-UNLIMITED",
+      "name": "Unlimited",
+      "type": "postpaid",
+      "monthly_price": 60.0,
+      "data_gb": null,
+      "data_unlimited": true,
+      "talk_minutes": "unlimited",
+      "texts": "unlimited",
+      "hotspot_gb": 25,
+      "network": "5G",
+      "contract": "monthly, cancel anytime",
+      "intro_offer": null,
+      "features": [
+        "Truly unlimited 5G data",
+        "25 GB high-speed mobile hotspot",
+        "Includes calls and texts to Canada and Mexico",
+        "Free spam call blocking"
+      ],
+      "best_for": "Single line users who never want to think about data caps",
+      "category": "postpaid"
+    },
+    {
+      "id": "POST-UNLIMITED-PLUS",
+      "name": "Unlimited Plus",
+      "type": "postpaid",
+      "monthly_price": 80.0,
+      "data_gb": null,
+      "data_unlimited": true,
+      "talk_minutes": "unlimited",
+      "texts": "unlimited",
+      "hotspot_gb": 50,
+      "network": "5G Ultra Wideband",
+      "contract": "monthly, cancel anytime",
+      "intro_offer": null,
+      "features": [
+        "Premium 5G Ultra Wideband data, never slowed",
+        "50 GB high-speed mobile hotspot",
+        "Includes roaming in 210+ countries",
+        "Streaming service subscription included",
+        "Free device protection for one device"
+      ],
+      "best_for": "Power users and frequent travelers who want the top-tier plan",
+      "category": "postpaid"
+    },
+    {
+      "id": "FAMILY-UNLIMITED-4",
+      "name": "Family Unlimited (4 lines)",
+      "type": "postpaid",
+      "monthly_price": 140.0,
+      "price_per_line": 35.0,
+      "lines_included": 4,
+      "data_gb": null,
+      "data_unlimited": true,
+      "talk_minutes": "unlimited",
+      "texts": "unlimited",
+      "hotspot_gb": 25,
+      "network": "5G",
+      "contract": "monthly, cancel anytime",
+      "intro_offer": "First 3 months 20% off for new accounts",
+      "features": [
+        "4 lines of unlimited 5G data",
+        "Effective price of $35 per line",
+        "25 GB hotspot per line",
+        "Free parental controls and content filtering",
+        "Add additional lines for $30/month each"
+      ],
+      "best_for": "Families wanting multiple unlimited lines at a lower per-line price",
+      "category": "family"
+    },
+    {
+      "id": "DATA-ONLY-30",
+      "name": "Data-Only 30",
+      "type": "data-only",
+      "monthly_price": 30.0,
+      "data_gb": 30,
+      "data_unlimited": false,
+      "talk_minutes": 0,
+      "texts": 0,
+      "hotspot_gb": 30,
+      "network": "5G",
+      "contract": "monthly, cancel anytime",
+      "intro_offer": null,
+      "features": [
+        "Designed for tablets, hotspots, and connected devices",
+        "No talk or text included",
+        "Full 30 GB usable as hotspot"
+      ],
+      "best_for": "Tablets, mobile hotspots, and secondary data devices",
+      "category": "data-only"
+    },
+    {
+      "id": "SENIOR-55",
+      "name": "55+ Plan",
+      "type": "postpaid",
+      "monthly_price": 40.0,
+      "lines_included": 2,
+      "data_gb": null,
+      "data_unlimited": true,
+      "talk_minutes": "unlimited",
+      "texts": "unlimited",
+      "hotspot_gb": 5,
+      "network": "5G",
+      "contract": "monthly, cancel anytime",
+      "eligibility": "At least one account holder must be 55 or older",
+      "intro_offer": null,
+      "features": [
+        "2 unlimited lines for $40/month total",
+        "Simplified billing and large-print statements available",
+        "Free scam and spam call protection"
+      ],
+      "best_for": "Customers 55+ who want two unlimited lines at a low price",
+      "category": "specialty"
+    },
+    {
+      "id": "STUDENT-UNLTD",
+      "name": "Student Unlimited",
+      "type": "postpaid",
+      "monthly_price": 30.0,
+      "data_gb": null,
+      "data_unlimited": true,
+      "talk_minutes": "unlimited",
+      "texts": "unlimited",
+      "hotspot_gb": 15,
+      "network": "5G",
+      "contract": "monthly, cancel anytime",
+      "eligibility": "Valid enrollment at an accredited college or university; reverify annually",
+      "intro_offer": null,
+      "features": [
+        "Unlimited 5G data at a student discount",
+        "15 GB hotspot",
+        "Streaming service subscription included"
+      ],
+      "best_for": "Verified students who want unlimited data on a budget",
+      "category": "specialty"
+    },
+    {
+      "id": "ADDON-INTL-DAYPASS",
+      "name": "International Day Pass",
+      "type": "add-on",
+      "price": 10.0,
+      "price_unit": "per day, per line",
+      "data_gb": "uses your plan's high-speed data",
+      "talk_minutes": "unlimited",
+      "texts": "unlimited",
+      "coverage": "210+ countries",
+      "contract": "none",
+      "features": [
+        "Use your existing plan's data, talk, and text abroad",
+        "Billed only on days you use your device internationally",
+        "Charge capped at 10 days per billing cycle, then included free for the rest of the cycle"
+      ],
+      "best_for": "Short international trips where you want to keep your normal number and plan",
+      "category": "roaming"
+    },
+    {
+      "id": "ADDON-INTL-MONTHLY",
+      "name": "International Monthly Pass",
+      "type": "add-on",
+      "price": 50.0,
+      "price_unit": "per month, per line",
+      "data_gb": 15,
+      "talk_minutes": "unlimited",
+      "texts": "unlimited",
+      "coverage": "210+ countries",
+      "contract": "none, recurring until cancelled",
+      "features": [
+        "15 GB of high-speed data abroad each month",
+        "Unlimited international talk and text",
+        "Better value than the Day Pass for trips longer than 5 days"
+      ],
+      "best_for": "Extended travel or expats who need consistent monthly international coverage",
+      "category": "roaming"
+    },
+    {
+      "id": "ADDON-INTL-CALLING",
+      "name": "International Calling Pack",
+      "type": "add-on",
+      "price": 15.0,
+      "price_unit": "per month, per line",
+      "coverage": "Calls from the US to 80+ countries",
+      "contract": "none, recurring until cancelled",
+      "features": [
+        "Discounted calling from the US to international numbers",
+        "Unlimited calls to landlines in 30 included countries",
+        "Does not cover usage while you are physically abroad (see roaming passes)"
+      ],
+      "best_for": "Customers who call family or contacts overseas from within the US",
+      "category": "roaming"
+    },
+    {
+      "id": "ADDON-HOTSPOT-BOOST",
+      "name": "Hotspot Boost",
+      "type": "add-on",
+      "price": 10.0,
+      "price_unit": "per month, per line",
+      "hotspot_gb": 15,
+      "contract": "none, recurring until cancelled",
+      "features": [
+        "Adds 15 GB of high-speed mobile hotspot data to any eligible plan",
+        "Stacks on top of your plan's included hotspot allowance"
+      ],
+      "best_for": "Customers who tether laptops or other devices and run out of hotspot data",
+      "category": "add-on"
+    }
+  ]
+}

@@ -1,0 +1,54 @@
+PROBLEM STATEMENT - AI TELECOM SUPPORT ASSISTANT
+
+For: PRD Exercise
+Your task: Read this brief, then write a PRD for the product described below.
+
+
+THE SITUATION
+
+NovaCell is a mobile operator with ~4 million subscribers. Customer support is one of its biggest costs and lowest satisfaction scores. Most support contacts are Tier-1,
+self-resolvable questions - issues whose answers already exist in NovaCell's own
+documentation. The most common themes are:
+
+- Slow or dropped mobile data
+- Confusing or unexpected charges on a bill
+- SIM / eSIM activation problems
+- Roaming setup before travel
+- Voice-call issues
+- Basic account and app questions
+
+Today these answers are scattered across three disconnected sources - a public FAQ, a
+database of past resolved tickets, and official PDF user guides. No single surface lets a
+customer ask a plain-language question and get a trustworthy answer from all three at once.
+So customers wait on hold for things an FAQ could solve, agents burn out on repetitive
+tickets, and answers are inconsistent.
+
+
+THE PRODUCT TO SPEC
+
+NovaCell wants an AI-powered self-serve chat assistant that answers Tier-1 customer
+questions in plain language, grounded only in NovaCell's verified knowledge (FAQ, past
+tickets, and guides) - never inventing prices, policies, or facts. When it can't answer
+confidently, it must say so.
+
+Build the PRD around these fixed constraints:
+
+- AI/chat is the solution - assume a conversational assistant powered by a language model.
+- Grounded answers only - every answer must trace back to NovaCell's sources; no made-up info.
+- Three knowledge sources - FAQ, resolved tickets, and PDF guides, kept current by support
+  ops without an engineering release.
+- No live billing/CRM access in v1 - no personalized account data ("my balance"); decide how
+  to handle that boundary.
+- Graceful escalation - define when and how the bot hands off to a human.
+
+
+YOUR PRD SHOULD COVER
+
+1. Problem & objective
+2. Target users & key use cases
+3. Scope - what's in v1 and explicitly out
+4. Functional requirements
+5. Non-functional requirements (accuracy, latency, privacy, cost)
+6. Success metrics - how you'll prove v1 worked
+7. Risks, assumptions, and open questions
+8. Future iterations (v2+)
