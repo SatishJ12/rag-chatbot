@@ -8,7 +8,8 @@ FAQ entries, resolved support tickets, and technical guides — and never
 answers from the LLM's internal knowledge alone.
 
 Built from the PRD in [PRD.md](PRD.md), based on the brief in
-[PROBLEM_STATEMENT.txt](PROBLEM_STATEMENT.txt).
+[PROBLEM_STATEMENT.txt](PROBLEM_STATEMENT.txt). The Refund Agent (below) was
+added afterward per [agent_PRD.md](agent_PRD.md).
 
 ## Why this exists
 
@@ -52,6 +53,54 @@ StrOutputParser → streamed response to UI
 - **Framework**: LangChain (LCEL)
 - **UI**: Streamlit
 
+## Refund Agent
+
+Alongside RAG-grounded answers, an intent classifier detects refund
+requests and routes them to a separate, safety-constrained Refund Agent:
+
+```
+User message
+     │
+     ▼
+Intent classifier ── requirement_inquiry ──► existing RAG pipeline (unchanged)
+     │
+     └── refund_request
+              │
+              ▼
+     LLM bound to 2 read-only tools:
+     get_user_account · validate_refund
+              │
+     Python reads the tool's structured
+     result and decides the branch —
+     never the LLM's own judgment
+              │
+   ┌──────────┼──────────────┐
+not eligible  ≤ ₹499        > ₹499
+   │          │               │
+ reject   ask confirmation  submitted to
+          │                 Support Team
+     user confirms
+          │
+          ▼
+   simulated refund executed
+```
+
+The rule the whole design protects: **`process_refund` and
+`submit_to_support` are never exposed to the LLM as callable tools.** The
+model can only call `get_user_account` and `validate_refund` — both
+read-only, both fully deterministic in code — so it can genuinely decide to
+investigate a request, but it can never decide on its own to move money.
+Every eligibility check, the ₹499 approval-limit split, and the
+confirmation gate live in plain Python, never in a prompt.
+
+Account and recharge data is hard-coded (`refund_data.py`) and scoped per
+browser session — refunds are fully simulated, no real billing, CRM, or
+payment provider involved. "Clear conversation" resets it to a fresh demo
+account.
+
+Try it: ask *"I want a refund of ₹499"* (or use the sample question in the
+sidebar), then reply *"Yes, proceed"* when asked to confirm.
+
 ## Features
 
 - Free-text chat with token-by-token streaming responses
@@ -59,8 +108,14 @@ StrOutputParser → streamed response to UI
 - Every answer shows an expandable **Sources** section listing exactly which
   FAQ entries, tickets, and guide chunks it drew from
 - 👍 / 👎 feedback on every answer, logged to `logs/interactions.jsonl`
-- "Clear conversation" to reset the session
-- A CLI REPL (`main.py`) for non-browser use
+- Detects refund requests and hands them to the Refund Agent (see above)
+  instead of the RAG pipeline
+- Recent conversation history is available to both the RAG pipeline and the
+  Refund Agent, so follow-up questions can resolve context (e.g. "should I
+  do that before I travel?")
+- "Clear conversation" to reset the session, including any pending refund
+- A CLI REPL (`main.py`) for non-browser use (RAG only — the Refund Agent
+  is Streamlit-only)
 
 ## Project layout
 
@@ -74,8 +129,12 @@ StrOutputParser → streamed response to UI
 | `chain.py` | Builds the grounded-answer LCEL chain against Groq |
 | `app.py` | Streamlit chat UI |
 | `main.py` | CLI REPL |
-| `logger.py` | Appends answers and feedback to `logs/interactions.jsonl` |
+| `logger.py` | Appends answers, feedback, and refund workflow steps to `logs/interactions.jsonl` |
 | `config.py` | Shared settings (models, paths, collection names) |
+| `intent.py` | Classifies each message as `requirement_inquiry` or `refund_request` |
+| `refund_agent.py` | Orchestrates the refund flow: bounded tool-calling loop, deterministic eligibility branching, confirmation gate |
+| `refund_tools.py` | `get_user_account`/`validate_refund` (LLM-callable) and `process_refund`/`submit_to_support` (never LLM-callable) |
+| `refund_data.py` | Hard-coded, session-scoped simulated account/recharge data |
 
 ## Setup
 
@@ -143,7 +202,12 @@ provides, so no changes are needed there.
 
 ## Scope (v1)
 
-This bot does **not** do live CRM/billing lookups, personalized account data,
-ticket creation/escalation to a human queue, multi-turn conversational
-memory in retrieval, or non-English languages — see [PRD.md](PRD.md) §4 and
-§11 for the full list of non-goals and future iterations.
+This bot does **not** do live CRM/billing lookups, real payment processing,
+ticket creation/escalation to a human queue, conversation history
+influencing retrieval, or non-English languages — see [PRD.md](PRD.md) §4
+and §11 for the full list of non-goals and future iterations.
+
+The Refund Agent is a deliberate, narrow exception to "no personalized
+account data": it operates on one hard-coded demo account with fully
+simulated data and refunds, never a real CRM or payment integration — see
+[agent_PRD.md](agent_PRD.md) §4 for that feature's own non-goals.
