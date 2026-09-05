@@ -1,7 +1,7 @@
 """RAG chain: retrieve from faq/tickets/guides, then generate a grounded answer with Groq."""
 from langchain_core.documents import Document
 from langchain_core.output_parsers import StrOutputParser
-from langchain_core.prompts import ChatPromptTemplate
+from langchain_core.prompts import ChatPromptTemplate, MessagesPlaceholder
 from langchain_groq import ChatGroq
 
 from config import GROQ_API_KEY, GROQ_MODEL, LLM_TEMPERATURE
@@ -27,7 +27,11 @@ Context:
 _llm = None
 
 
-def _get_llm() -> ChatGroq:
+def get_llm() -> ChatGroq:
+    """Shared LLM singleton -- reused by intent.py and refund_agent.py too, so
+    every caller gets the same temperature=0 / reasoning_effort="none" config
+    rather than risking a second instance that forgets to suppress reasoning
+    tokens (which would leak into a tool-loop message or a log line)."""
     global _llm
     if _llm is None:
         _llm = ChatGroq(
@@ -54,10 +58,11 @@ def build_chain():
     prompt = ChatPromptTemplate.from_messages(
         [
             ("system", SYSTEM_PROMPT),
+            MessagesPlaceholder(variable_name="history", optional=True),
             ("human", "{question}"),
         ]
     )
-    return prompt | _get_llm() | StrOutputParser()
+    return prompt | get_llm() | StrOutputParser()
 
 
 _chain = None
@@ -81,11 +86,14 @@ def get_sources(documents: list[Document]) -> list[dict]:
     ]
 
 
-def answer_stream(question: str):
-    """Retrieve context, then yield answer tokens. Returns (generator, sources)."""
+def answer_stream(question: str, history: list | None = None):
+    """Retrieve context, then yield answer tokens. Returns (generator, sources).
+
+    `history` (if given) only informs generation -- retrieval always searches
+    on the raw current question, never on conversation context."""
     documents = retrieve(question)
     context = format_context(documents)
     sources = get_sources(documents)
     chain = _get_chain()
-    token_stream = chain.stream({"question": question, "context": context})
+    token_stream = chain.stream({"question": question, "context": context, "history": history or []})
     return token_stream, sources

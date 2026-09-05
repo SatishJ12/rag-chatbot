@@ -35,3 +35,17 @@ def log_feedback(message_id: str, feedback: str):
             "feedback": feedback,
         }
     )
+
+
+def log_refund_step(event: str, **fields):
+    """Structured refund-workflow logging (agent_PRD.md section 12).
+    Never pass raw LLM reasoning/chain-of-thought here -- only structured
+    tool inputs/outputs and workflow milestones."""
+    _append(
+        {
+            "type": "refund_step",
+            "event": event,
+            "timestamp": time.time(),
+            **fields,
+        }
+    )

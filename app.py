@@ -2,10 +2,14 @@
 import uuid
 
 import streamlit as st
+from langchain_core.messages import AIMessage, HumanMessage
 
+import refund_data
 from chain import answer_stream
-from config import GROQ_API_KEY
+from config import GROQ_API_KEY, HISTORY_TURNS
+from intent import classify_intent
 from logger import log_answer, log_feedback
+from refund_agent import continue_refund_flow, start_refund_flow
 
 SAMPLE_QUESTIONS = [
     "Why is my mobile internet so slow?",
@@ -15,6 +19,7 @@ SAMPLE_QUESTIONS = [
     "How do I check my current data balance?",
     "I hear an echo during phone calls, how do I fix it?",
     "What's the difference between the Unlimited and Unlimited Plus plans?",
+    "I want a refund of ₹499.",
 ]
 
 st.set_page_config(page_title="NovaCell Support Assistant", page_icon="📶")
@@ -25,6 +30,21 @@ def init_state():
         st.session_state.messages = []
     if "pending_question" not in st.session_state:
         st.session_state.pending_question = None
+    if "pending_refund" not in st.session_state:
+        st.session_state.pending_refund = None
+
+
+def build_history() -> list:
+    """Last HISTORY_TURNS exchanges from *prior* turns, as LangChain messages.
+    Must be called before the current turn is appended to session state."""
+    recent = st.session_state.messages[-(HISTORY_TURNS * 2):]
+    history = []
+    for msg in recent:
+        if msg["role"] == "user":
+            history.append(HumanMessage(content=msg["content"]))
+        else:
+            history.append(AIMessage(content=msg["content"]))
+    return history
 
 
 def render_sources(sources: list[dict]):
@@ -68,6 +88,7 @@ def render_history():
 
 
 def handle_question(question: str):
+    history = build_history()
     st.session_state.messages.append({"role": "user", "content": question, "id": str(uuid.uuid4())})
 
     with st.chat_message("user"):
@@ -75,10 +96,33 @@ def handle_question(question: str):
 
     message_id = str(uuid.uuid4())
     with st.chat_message("assistant"):
-        token_stream, sources = answer_stream(question)
-        answer = st.write_stream(token_stream)
-        render_sources(sources)
-        render_feedback(message_id)
+        if st.session_state.pending_refund is not None:
+            with st.spinner("Working on your refund request..."):
+                try:
+                    answer, new_pending = continue_refund_flow(question, history, st.session_state.pending_refund)
+                except Exception:
+                    answer = "Sorry, something went wrong handling your refund request. Please try again."
+                    new_pending = None
+            st.session_state.pending_refund = new_pending
+            st.markdown(answer)
+            sources = []
+            render_feedback(message_id)
+        elif classify_intent(question, history) == "refund_request":
+            with st.spinner("Working on your refund request..."):
+                try:
+                    answer, new_pending = start_refund_flow(question, history)
+                except Exception:
+                    answer = "Sorry, something went wrong handling your refund request. Please try again."
+                    new_pending = None
+            st.session_state.pending_refund = new_pending
+            st.markdown(answer)
+            sources = []
+            render_feedback(message_id)
+        else:
+            token_stream, sources = answer_stream(question, history=history)
+            answer = st.write_stream(token_stream)
+            render_sources(sources)
+            render_feedback(message_id)
 
     st.session_state.messages.append(
         {"role": "assistant", "content": answer, "sources": sources, "id": message_id}
@@ -102,6 +146,8 @@ def main():
         if st.button("🗑️ Clear conversation", use_container_width=True):
             st.session_state.messages = []
             st.session_state.pending_question = None
+            st.session_state.pending_refund = None
+            refund_data.reset_store()
             st.rerun()
 
     if not GROQ_API_KEY:
