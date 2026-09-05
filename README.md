@@ -2,10 +2,11 @@
 
 A Retrieval-Augmented Generation (RAG) chatbot that resolves common telecom
 customer-support queries without live agent involvement. It answers questions
-about mobile connectivity, billing, SIM management, roaming, voice issues, and
-account management by grounding every response in NovaCell's own knowledge —
-FAQ entries, resolved support tickets, and technical guides — and never
-answers from the LLM's internal knowledge alone.
+about mobile connectivity, billing, SIM management, roaming, voice issues,
+account management, and plan/pricing by grounding every response in
+NovaCell's own knowledge — FAQ entries, resolved support tickets, technical
+guides, and current plans and pricing — and never answers from the LLM's
+internal knowledge alone.
 
 Built from the PRD in [PRD.md](PRD.md), based on the brief in
 [PROBLEM_STATEMENT.txt](PROBLEM_STATEMENT.txt).
@@ -57,7 +58,7 @@ StrOutputParser → streamed response to UI
 - Free-text chat with token-by-token streaming responses
 - Sidebar of sample questions you can click to send instantly
 - Every answer shows an expandable **Sources** section listing exactly which
-  FAQ entries, tickets, and guide chunks it drew from
+  FAQ entries, tickets, guide chunks, or plans it drew from
 - 👍 / 👎 feedback on every answer, logged to `logs/interactions.jsonl`
 - "Clear conversation" to reset the session
 - A CLI REPL (`main.py`) for non-browser use
